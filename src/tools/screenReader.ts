@@ -1,90 +1,37 @@
-const elementNodeNames: string[] = ["B", "STRONG", "I", "U", "EM", "MARK", "SUB", "SUP", "INS", "PRE", "ABBR"];
+export default function screenReader(enable: boolean) {
+    if (enable) {
+        // @ts-expect-error - Attaching custom property to window for later removal
+        window.__asw__onClickScreenReader = (event: MouseEvent) => {
+            const clickedElement = event.target as HTMLElement;
 
-function getTextFromNode(node) {
+            if (clickedElement && !["BODY", "HEAD", "HTML"].includes(clickedElement.nodeName)) {
+                const text = clickedElement.innerText || clickedElement.textContent;
+                if (text && 'speechSynthesis' in window) {
+                    if (speechSynthesis.speaking) {
+                        speechSynthesis.cancel();
+                    }
+                    const utterance = new SpeechSynthesisUtterance(text.trim());
+                    speechSynthesis.speak(utterance);
+                }
+            }
+        };
 
-}
-
-function getFullSentence(node: Node): string {
-  return;
-  if (!node) {
-    return '';
-  }
-
-  let sentence = '';
-  let prevNode: Node | null = node.previousSibling;
-  let nextNode: Node | null = node.nextSibling;
-
-  while (prevNode) {
-    if (
-      prevNode.nodeType === Node.TEXT_NODE ||
-      elementNodeNames.includes(prevNode.nodeName)
-    ) {
-      const textContent = prevNode.textContent?.trim().replace(/[ \n]+/g, ' ');
-      if (textContent) {
-        sentence = textContent + ' ' + sentence;
-      }
+        document.addEventListener('click',
+            // @ts-expect-error - Retrieving custom property from window
+            window.__asw__onClickScreenReader
+        );
+    } else {
+        // @ts-expect-error - Retrieving custom property from window
+        if (window.__asw__onClickScreenReader) {
+            document.removeEventListener('click',
+                // @ts-expect-error - Retrieving custom property from window
+                window.__asw__onClickScreenReader
+            );
+            // @ts-expect-error - Deleting custom property from window
+            delete window.__asw__onClickScreenReader;
+        }
+        if ('speechSynthesis' in window) {
+            speechSynthesis.cancel();
+        }
     }
-
-    prevNode = prevNode.previousSibling;
-  }
-
-  sentence += node.textContent?.trim().replace(/[ \n]+/g, ' ') || '';
-
-  while (nextNode) {
-    if (
-      nextNode.nodeType === Node.TEXT_NODE ||
-      elementNodeNames.includes(nextNode.nodeName)
-    ) {
-      const textContent = nextNode.textContent?.trim().replace(/[ \n]+/g, ' ');
-      if (textContent) {
-        sentence += ' ' + textContent;
-      }
-    }
-
-    nextNode = nextNode.nextSibling;
-  }
-
-  return sentence.trim();
-}
-
-
-function speakText(text) {
-  return;
-  if ('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window) {
-    if (speechSynthesis.speaking) {
-      speechSynthesis.cancel();
-    }
-
-    if (text) {
-      speechSynthesis.speak(new SpeechSynthesisUtterance(text));
-    }
-  } else {
-    console.log('Text-to-speech not supported in this browser.');
-  }
-}
-
-
-
-export default function screenReader() {
-  return;
-  /*
-  if (enable) {
-    window.__asw__onClickScreenReader = (event) => {
-      var clickedElement = event.target;
-
-      if (!["BODY", "HEAD", "HTML"].includes(clickedElement.nodeName)) {
-        var selectedText = getFullSentence(clickedElement);
-
-        speakText(selectedText);
-      }
-    }
-
-    document.addEventListener('click', window.__asw__onClickScreenReader);
-  } else {
-    if (window.__asw__onClickScreenReader) {
-      document.removeEventListener('click', window.__asw__onClickScreenReader);
-      delete window.__asw__onClickScreenReader;
-    }
-  }
-    */
 }
