@@ -72,6 +72,13 @@ async function build() {
     await Promise.all(Object.values(targets).map(target =>
       esbuild.build({ ...baseConfig, ...target })
     ));
+    
+    // Copy index.html to dist
+    if (fs.existsSync('./src/index.html')) {
+        fs.copyFileSync('./src/index.html', './dist/index.html');
+        console.log('📄 Copied index.html to dist');
+    }
+    
     console.log(`✅ Build complete: ${buildTarget.outfile}`);
   }
 }
