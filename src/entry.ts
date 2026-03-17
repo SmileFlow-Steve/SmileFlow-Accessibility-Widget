@@ -4,6 +4,12 @@ import { getScriptDataAttribute } from "./utils/getScriptDataAttribute";
 import observeHTMLLang from "./utils/observeHTMLLang";
 import {loadLanguages} from "@/i18n/Languages";
 
+declare global {
+  interface Window {
+    SmileFlowPlugin: unknown;
+  }
+}
+
 async function initialize() {
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
         document.removeEventListener('readystatechange', initialize);
@@ -12,7 +18,8 @@ async function initialize() {
             lang: getDefaultLanguage(),
             position: getScriptDataAttribute("position"),
             offset: getScriptDataAttribute("offset")?.split(",").map(Number),
-            size: getScriptDataAttribute("size")
+            size: getScriptDataAttribute("size"),
+            buttonIcon: getScriptDataAttribute("button-icon")
         };
         
         await loadLanguages();

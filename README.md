@@ -1,14 +1,16 @@
 # 👩‍🦽 SmileFlow: Accessibility Widget for Websites
 
-
-[![GitHub license](https://img.shields.io/github/license/bennyluk/Sienna-Accessibility-Widget)](https://github.com/bennyluk/Sienna-Accessibility-Widget/blob/master/LICENSE)
-[![GitHub release](https://img.shields.io/github/v/release/bennyluk/Sienna-Accessibility-Widget)](https://github.com/bennyluk/Sienna-Accessibility-Widget/releases)
-[![GitHub issues](https://img.shields.io/github/issues/bennyluk/Sienna-Accessibility-Widget)](https://github.com/bennyluk/Sienna-Accessibility-Widget/issues)
-
 SmileFlow: accessibility widget for websites. easy to install, just copy and paste the plugin. Fast performance with lightweight plugin (~30kb).
 
+## 🚀 How-to Install
+
+Instructions: [accessibility.smileflow.ai](https://accessibility.smileflow.ai/)
 
 ## 🚀 Features
+
+✅ **Accessibility Profiles**: Supports multiple disability profiles at the same time! Users can now toggle predefined profiles like "Visually Impaired", "Dyslexia Friendly", "Seizure Safe", and "High Contrast".
+
+✅ **Screen Reader**: Clicking on an element now reads the screen utilizing 'speechSynthesis'.
 
 ✅ **Multilingual Support**: Supports multiple languages to ensure a seamless user experience for all users.
 
@@ -22,15 +24,9 @@ SmileFlow: accessibility widget for websites. easy to install, just copy and pas
 
 ## 📌 TODO
 
-- Accessibility Profiles
-- Screen Reader
 - Voice Navigation
-- Position of Button
-- Inject Icon in code
 - Support More Languages
 
-## 🤝 Contributing
-We welcome contributions from anyone who is interested in improving this. If you would like to contribute, please fork the repository and submit a pull request. ❤️
 
 ## 🎓 License
-SmileFlow is released under the MIT License
+SmileFlow Accessibility is released under the MIT License

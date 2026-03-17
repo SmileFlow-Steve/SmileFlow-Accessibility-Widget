@@ -10,6 +10,7 @@ import renderButtons from "./renderButtons";
 import adjustFontSize from "../../tools/adjustFontSize";
 import renderTools from "./renderTools";
 import reset from "./reset";
+import runAccessibility from "./runAccessibility";
 
 import { ILanguage, LANGUAGES } from "../../i18n/Languages";
 
@@ -120,36 +121,44 @@ export default function renderMenu() {
             if (el.classList.contains("asw-profile-btn")) {
                 const profile = PROFILES.find(p => p.key === key);
                 if (profile) {
-                    el.classList.toggle("asw-selected", isSelected);
+                    const buttons = Array.from($menu.querySelectorAll('.asw-btn'));
 
                     if (isSelected) {
+                        // Deselect other profiles
+                        $menu.querySelectorAll(".asw-profile-btn").forEach((btn: HTMLElement) =>
+                            btn.classList.remove("asw-selected")
+                        );
+                        el.classList.add("asw-selected");
+
+                        // Reset states completely before applying new profile
+                        userSettings.states = {};
+
+                        // Apply profile states
                         Object.assign(userSettings.states, profile.states);
                     } else {
-                        // De-select profile: this is tricky, maybe just don't allow de-selecting profile
-                        // or just reset and then re-apply?
-                        // For now, let's just allow toggling on.
+                        el.classList.remove("asw-selected");
+                        // Clear all states when turning off the profile
+                        userSettings.states = {};
                     }
 
                     saveUserSettings();
-                    // We need to re-render the menu to show selected buttons
-                    // but for now, let's just trigger accessibility run
                     runAccessibility();
 
-                    // Update UI for other buttons
-                    const buttons = Array.from($menu.querySelectorAll('.asw-btn'));
-                    Object.entries(userSettings.states).forEach(([k, v]) => {
-                        if (k === 'fontSize') {
-                            const fs = Number(v) || 1;
-                            $menu.querySelector(".asw-amount").textContent = `${(fs * 100).toFixed(0)}%`;
+                    // Sync all buttons to reflect current settings
+                    buttons.forEach((btn: HTMLElement) => {
+                        const btnKey = btn.dataset.key;
+                        if (btn.classList.contains('asw-profile-btn')) return;
+
+                        if (btn.classList.contains('asw-filter')) {
+                            btn.classList.toggle("asw-selected", userSettings.states.contrast === btnKey);
                         } else {
-                            const selector = k === "contrast" ? v : k;
-                            const btn = buttons.find(b => b.dataset.key === selector);
-                            if (btn) {
-                                if (v) btn.classList.add("asw-selected");
-                                else btn.classList.remove("asw-selected");
-                            }
+                            btn.classList.toggle("asw-selected", !!userSettings.states[btnKey]);
                         }
                     });
+
+                    // Sync font size display
+                    const fs = Number(userSettings.states.fontSize) || 1;
+                    $menu.querySelector(".asw-amount").textContent = `${(fs * 100).toFixed(0)}%`;
                 }
                 return;
             }

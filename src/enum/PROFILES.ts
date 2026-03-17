@@ -24,8 +24,7 @@ export const PROFILES = [
         label: 'Seizure Safe',
         states: {
             'stop-animations': true,
-            'low-saturation': true,
-            contrast: 'light-contrast'
+            contrast: 'low-saturation'
         }
     },
     {
