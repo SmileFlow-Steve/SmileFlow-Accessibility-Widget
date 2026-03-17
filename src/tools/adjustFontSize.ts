@@ -16,14 +16,22 @@ export default function adjustFontSize(multiply:number = 1) {
 
             // Get the original font size
             const orgFontSize = Number(el.dataset.aswOrgFontSize) || parseInt(window.getComputedStyle(el).fontSize);
+            const currentFontSize = parseInt(el.style.fontSize);
 
             // If no font size stored in data, set it now
             if (!el.dataset.aswOrgFontSize) {
                 el.dataset.aswOrgFontSize = String(orgFontSize);
             }
 
-            // Calculate and apply new font size
+            // Calculate new font size
             const newFontSize = orgFontSize * multiply;
-            el.style.fontSize = `${newFontSize}px`;
+
+            // Only apply if it's different from the current style or if we are resetting to 1
+            if (multiply !== 1) {
+                el.style.fontSize = `${newFontSize}px`;
+            } else if (el.style.fontSize && el.dataset.aswOrgFontSize) {
+                // If multiply is 1, but we have a hardcoded size, remove it to let CSS take over again
+                el.style.fontSize = '';
+            }
         });
 }

@@ -17,7 +17,10 @@ export default function smileflow({
     const savedSettings = getSavedUserSettings();
 
     Object.assign(pluginConfig, options);
-    Object.assign(userSettings, savedSettings);
+    
+    if (savedSettings && typeof savedSettings === 'object') {
+        Object.assign(userSettings, savedSettings);
+    }
     
     runAccessibility();
     renderWidget();
