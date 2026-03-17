@@ -10,6 +10,10 @@ SmileFlow: accessibility widget for websites. easy to install, just copy and pas
 
 ## 🚀 Features
 
+✅ **Accessibility Profiles**: Supports multiple disability profiles at the same time! Users can now toggle predefined profiles like "Visually Impaired", "Dyslexia Friendly", "Seizure Safe", and "High Contrast".
+
+✅ **Screen Reader**: Clicking on an element now reads the screen utilizing 'speechSynthesis'.
+
 ✅ **Multilingual Support**: Supports multiple languages to ensure a seamless user experience for all users.
 
 ✅ **Dyslexia Font**:  Dyslexia font to make reading easier for dyslexic users.
@@ -22,15 +26,9 @@ SmileFlow: accessibility widget for websites. easy to install, just copy and pas
 
 ## 📌 TODO
 
-- Accessibility Profiles
-- Screen Reader
 - Voice Navigation
-- Position of Button
-- Inject Icon in code
 - Support More Languages
 
-## 🤝 Contributing
-We welcome contributions from anyone who is interested in improving this. If you would like to contribute, please fork the repository and submit a pull request. ❤️
 
 ## 🎓 License
 SmileFlow is released under the MIT License
