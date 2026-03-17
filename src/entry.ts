@@ -4,6 +4,12 @@ import { getScriptDataAttribute } from "./utils/getScriptDataAttribute";
 import observeHTMLLang from "./utils/observeHTMLLang";
 import {loadLanguages} from "@/i18n/Languages";
 
+declare global {
+  interface Window {
+    SmileFlowPlugin: any;
+  }
+}
+
 async function initialize() {
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
         document.removeEventListener('readystatechange', initialize);
