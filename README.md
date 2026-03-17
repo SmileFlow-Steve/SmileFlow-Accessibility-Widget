@@ -1,6 +1,5 @@
 # 👩‍🦽 SmileFlow: Accessibility Widget for Websites
 
-![Banner Image](banner.png)
 
 [![GitHub license](https://img.shields.io/github/license/bennyluk/Sienna-Accessibility-Widget)](https://github.com/bennyluk/Sienna-Accessibility-Widget/blob/master/LICENSE)
 [![GitHub release](https://img.shields.io/github/v/release/bennyluk/Sienna-Accessibility-Widget)](https://github.com/bennyluk/Sienna-Accessibility-Widget/releases)
@@ -8,10 +7,6 @@
 
 SmileFlow: accessibility widget for websites. easy to install, just copy and paste the plugin. Fast performance with lightweight plugin (~30kb).
 
-## 🎉 Getting Started
-[View Demo](https://smileflow.ai)
-
-[Install the plugin quickly with just a copy and paste](https://smileflow.ai/#setup)
 
 ## 🚀 Features
 
