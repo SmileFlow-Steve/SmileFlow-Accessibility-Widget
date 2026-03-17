@@ -10,6 +10,7 @@ import renderButtons from "./renderButtons";
 import adjustFontSize from "../../tools/adjustFontSize";
 import renderTools from "./renderTools";
 import reset from "./reset";
+import runAccessibility from "./runAccessibility";
 
 import { ILanguage, LANGUAGES } from "../../i18n/Languages";
 
@@ -129,12 +130,15 @@ export default function renderMenu() {
                         );
                         el.classList.add("asw-selected");
 
+                        // Reset states completely before applying new profile
+                        userSettings.states = {};
+
                         // Apply profile states
                         Object.assign(userSettings.states, profile.states);
                     } else {
                         el.classList.remove("asw-selected");
-                        // Optional: Reset specific states belonging to this profile? 
-                        // For now, let's keep it simple: toggling off a profile just deselects the profile button.
+                        // Clear all states when turning off the profile
+                        userSettings.states = {};
                     }
 
                     saveUserSettings();
