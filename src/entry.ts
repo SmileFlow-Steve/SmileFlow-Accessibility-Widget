@@ -12,7 +12,8 @@ async function initialize() {
             lang: getDefaultLanguage(),
             position: getScriptDataAttribute("position"),
             offset: getScriptDataAttribute("offset")?.split(",").map(Number),
-            size: getScriptDataAttribute("size")
+            size: getScriptDataAttribute("size"),
+            buttonIcon: getScriptDataAttribute("button-icon")
         };
         
         await loadLanguages();
