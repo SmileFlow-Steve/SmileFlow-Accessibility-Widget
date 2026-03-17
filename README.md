@@ -5,6 +5,7 @@ SmileFlow: accessibility widget for websites. easy to install, just copy and pas
 ## 🚀 How-to Install
 
 Instructions: [accessibility.smileflow.ai](https://accessibility.smileflow.ai/)
+Learn More: [About](https://www.smileflow.ai/accessibility)
 
 ## 🚀 Features
 
