@@ -35,6 +35,37 @@
             padding: 20px;
             border-radius: 8px;
             overflow-x: auto;
+            position: relative;
+        }
+        pre code {
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            color: inherit;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .copy-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
         }
         .footer {
             margin-top: 40px;
@@ -54,11 +85,17 @@
         <h2>Installation</h2>
         <p>Add the following script tag to the <code>&lt;head&gt;</code> or bottom of the <code>&lt;body&gt;</code> of your website:</p>
         
-        <pre><code>&lt;script 
+        <div style="position: relative;">
+            <pre><code id="script-snippet">&lt;script 
   src="https://accessibility.smileflow.ai/smileflow-accessibility.umd.js"
   data-asw-position="bottom-right"
   data-asw-size="58"&gt;
 &lt;/script&gt;</code></pre>
+            <button class="copy-btn" onclick="copyCode()">
+                <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                Copy
+            </button>
+        </div>
 
         <h2>Available Files</h2>
         <ul>
@@ -71,5 +108,19 @@
     <div class="footer">
         &copy; 2026 <a href="https://smileflow.ai">SmileFlow</a>. All rights reserved.
     </div>
+
+    <script>
+        function copyCode() {
+            const code = document.getElementById('script-snippet').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerText = 'Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>
