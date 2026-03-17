@@ -11,10 +11,12 @@ import highlightLinks from "@/tools/highlightLinks";
 import adjustLetterSpacing from "@/tools/adjustLetterSpacing";
 import adjustLineHeight from "@/tools/adjustLineHeight";
 import adjustFontWeight from "@/tools/adjustFontWeight";
+import screenReader from "@/tools/screenReader";
 
 export default function renderTools() {
     const states = userSettings?.states;
 
+    screenReader(states['screen-reader']);
     highlightTitle(states['highlight-title']);
     highlightLinks(states['highlight-links']);
 

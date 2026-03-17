@@ -1,6 +1,6 @@
 const esbuild = require('esbuild');
 const fs = require('fs');
-const minify = require('html-minifier').minify;
+const minify = require('html-minifier-terser').minify;
 
 const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
 const isWatch = process.argv.includes('--watch');
@@ -32,12 +32,12 @@ const baseConfig = {
       setup(build) {
         build.onLoad({ filter: /\.(html|svg)$/ }, async (args) => {
           const file = fs.readFileSync(args.path, 'utf8');
-          const html = minify(file, {
+          const html = await minify(file, {
             removeComments: true,
             removeEmptyAttributes: true,
             collapseWhitespace: true
-          }).trim();
-          return { loader: "text", contents: html };
+          });
+          return { loader: "text", contents: html.trim() };
         });
       }
     }

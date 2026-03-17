@@ -62,10 +62,10 @@ export interface ILanguage {
 
 export const LANGUAGE_DICTIONARY: Record<string, ILanguage> = {};
 
-// @ts-expect-error"
+// @ts-expect-error - Dynamic import with variable path is not fully typed
 export async function loadLanguages() {
   for (const locale of locales) {
-    // @ts-expect-error"
+    // @ts-expect-error - Dynamic import with variable path is not fully typed
     LANGUAGE_DICTIONARY[locale] = (await import(`../locales/${locale}.json`)).default;
   }
 }

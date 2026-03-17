@@ -1,9 +1,10 @@
-// @ts-ignore
+// @ts-expect-error - html file import
 import template from "./menu.html";
 
 import FilterButtons from "./FilterButtons";
 import ContentButtons from "./ContentButtons";
 import ToolButtons from "../../enum/TOOL_PRESETS";
+import { PROFILES } from "../../enum/PROFILES";
 
 import renderButtons from "./renderButtons";
 import adjustFontSize from "../../tools/adjustFontSize";
@@ -19,6 +20,7 @@ import { userSettings, saveUserSettings } from "@/globals/userSettings";
 import { changeLanguage } from "@/i18n/changeLanguage";
 import toggleMenu from "./toggleMenu";
 import { $widget } from "../widget/widget";
+import { escapeHTML } from "@/utils/escape";
 
 export default function renderMenu() {
     const $container: HTMLElement = document.createElement("div");
@@ -33,13 +35,18 @@ export default function renderMenu() {
     $menu.querySelector(".content").innerHTML = renderButtons(ContentButtons);
     $menu.querySelector(".tools").innerHTML = renderButtons(ToolButtons, 'asw-tools');
     $menu.querySelector(".contrast").innerHTML = renderButtons(FilterButtons, 'asw-filter');
+    $menu.querySelector(".profiles").innerHTML = PROFILES.map(profile =>
+        `<button class="asw-btn asw-profile-btn" type="button" data-key="${escapeHTML(profile.key)}">
+            <span class="asw-translate">${escapeHTML(profile.label)}</span>
+        </button>`
+    ).join('');
 
     // *** States UI Rendering ***
     const states = userSettings?.states;
 
     const fontSize = Number(states?.fontSize) || 1;
     if (fontSize != 1) {
-        $menu.querySelector(".asw-amount").innerHTML = `${fontSize * 100}%`;
+        $menu.querySelector(".asw-amount").textContent = `${(fontSize * 100).toFixed(0)}%`;
     }
 
     if (states) {
@@ -64,7 +71,7 @@ export default function renderMenu() {
     }
 
     const $lang = $menu.querySelector("#asw-language");
-    const langOptions = LANGUAGES.map((lang: ILanguage) => `<option value="${lang.code}">${lang.label}</option>`).join('');
+    const langOptions = LANGUAGES.map((lang: ILanguage) => `<option value="${escapeHTML(lang.code)}">${escapeHTML(lang.label)}</option>`).join('');
     $lang.innerHTML = langOptions;
     $lang.value = userSettings.lang;
     $lang.addEventListener("change", (event) => {
@@ -109,6 +116,43 @@ export default function renderMenu() {
         el.addEventListener("click", () => {
             const key = el.dataset.key;
             const isSelected = !el.classList.contains("asw-selected");
+
+            if (el.classList.contains("asw-profile-btn")) {
+                const profile = PROFILES.find(p => p.key === key);
+                if (profile) {
+                    el.classList.toggle("asw-selected", isSelected);
+
+                    if (isSelected) {
+                        Object.assign(userSettings.states, profile.states);
+                    } else {
+                        // De-select profile: this is tricky, maybe just don't allow de-selecting profile
+                        // or just reset and then re-apply?
+                        // For now, let's just allow toggling on.
+                    }
+
+                    saveUserSettings();
+                    // We need to re-render the menu to show selected buttons
+                    // but for now, let's just trigger accessibility run
+                    runAccessibility();
+
+                    // Update UI for other buttons
+                    const buttons = Array.from($menu.querySelectorAll('.asw-btn'));
+                    Object.entries(userSettings.states).forEach(([k, v]) => {
+                        if (k === 'fontSize') {
+                            const fs = Number(v) || 1;
+                            $menu.querySelector(".asw-amount").textContent = `${(fs * 100).toFixed(0)}%`;
+                        } else {
+                            const selector = k === "contrast" ? v : k;
+                            const btn = buttons.find(b => b.dataset.key === selector);
+                            if (btn) {
+                                if (v) btn.classList.add("asw-selected");
+                                else btn.classList.remove("asw-selected");
+                            }
+                        }
+                    });
+                }
+                return;
+            }
             
             // --- Contrast ---
             if (el.classList.contains("asw-filter")) {

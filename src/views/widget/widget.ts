@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-expect-error - html file import
 import template from "./widget.html";
 import css from "./widget.css";
 import { openMenu } from "../menu/menu";
@@ -7,6 +7,7 @@ import translateWidget from "../menu/translateWidget";
 import {
     pluginConfig
 } from "@/globals/pluginConfig";
+import { escapeHTML } from "@/utils/escape";
 
 export let $widget: HTMLElement;
 
@@ -16,6 +17,14 @@ export function renderWidget() {
     $widget.innerHTML = `<style>${css}</style>${template}`;
 
     const $btn: HTMLElement = $widget.querySelector(".asw-menu-btn");
+
+    if (pluginConfig.buttonIcon) {
+        if (pluginConfig.buttonIcon.trim().startsWith('<svg')) {
+            $btn.innerHTML = pluginConfig.buttonIcon;
+        } else {
+            $btn.innerHTML = `<img src="${escapeHTML(pluginConfig.buttonIcon)}" alt="Accessibility" style="width: 30px; height: 30px;" />`;
+        }
+    }
     Object.assign($btn.style, getButtonStyle());
     
     $btn?.addEventListener("click", (event) => {
@@ -35,7 +44,7 @@ export function renderWidget() {
 
 function getButtonStyle() {
     const {
-        position = "bottom-left",
+        position = "bottom-right",
         offset = [20, 20]
     } = pluginConfig;
 
